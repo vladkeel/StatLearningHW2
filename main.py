@@ -29,3 +29,4 @@ def ex4(data):
 if __name__ == '__main__':
     data_df, labels_df = load_mnist()
     X_train, X_test, y_train, y_test = train_test_split(data_df, labels_df, random_state=98, test_size=0.143)
+ 
