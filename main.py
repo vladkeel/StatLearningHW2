@@ -16,26 +16,22 @@ class Perceptron(object):
         # Dataframe
         self.data = data
 
-        # TODO: Check if this (len(data[0])) approach is working
         # Number of columns in dataframe
         self.num_of_columns = len(data['data'][0])
 
         # Inputs (X)
         # Assumption: n-1 columns of data frame contains input data vectors
-        # self.X = self.data.iloc[:, :(self.num_of_columns - 1)]
         self.X = []
         for i in range(len(self.data['data'])):
             self.X.append(np.append(self.data['data'][i], [1]))
 
         # Labels (Y)
         # Assumption: A column n`th of data frame is the labels vector
-        # self.Y = self.data.iloc[:, :-1]
         self.Y = []
         for i in range(len(self.data['target'])):
             self.Y.append(1 if self.data['target'][i] == 1 else -1)
 
         # Weights vector
-        # TODO: Calculate right value
         self.weights = np.zeros(self.num_of_columns + 1)
 
     def train(self):
@@ -45,7 +41,6 @@ class Perceptron(object):
             progress_bar(t / self.epochs, "Training perceptron...")
             for i, x in enumerate(self.X):
                 if (np.dot(self.X[i], self.weights) * self.Y[i]) <= 0:
-                    # TODO: Does it update weights vector at index i, ot should we use self.weights[i]
                     self.weights = self.weights + self.X[i] * self.Y[i]
                     break
             else:
