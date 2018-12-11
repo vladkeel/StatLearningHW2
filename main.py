@@ -10,7 +10,7 @@ from sklearn.datasets import load_breast_cancer
 class Perceptron(object):
 
     def __init__(self, data, threshold=1000000):
-        # Threshold , number of epochs that algorithm will do, default = 100
+        # Threshold , number of epochs that algorithm will do, default = 1000000
         self.epochs = threshold
 
         # Dataframe
@@ -20,13 +20,13 @@ class Perceptron(object):
         self.num_of_columns = len(data['data'][0])
 
         # Inputs (X)
-        # Assumption: n-1 columns of data frame contains input data vectors
+        # Assumption: 'data' key of data frame contains input data vectors
         self.X = []
         for i in range(len(self.data['data'])):
             self.X.append(np.append(self.data['data'][i], [1]))
 
         # Labels (Y)
-        # Assumption: A column n`th of data frame is the labels vector
+        # Assumption: 'target' key of data frame is the labels vector
         self.Y = []
         for i in range(len(self.data['target'])):
             self.Y.append(1 if self.data['target'][i] == 1 else -1)
