@@ -5,6 +5,44 @@ import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.metrics import confusion_matrix
 
+class Perceptron(object):
+
+    def __init__(self, data, threshold=100):
+        # Threshold , number of epochs that algorithm will do, default = 100
+        self.epochs = threshold
+
+        # Dataframe
+        self.data = data
+
+        # TODO: Check if this (len(data[0])) approach is working
+        # Number of columns in dataframe
+        self.num_of_columns = len(data['data'])
+
+        # Inputs (X)
+        # Assumption: n-1 columns of data frame contains input data vectors
+        # self.X = self.data.iloc[:, :(self.num_of_columns - 1)]
+        self.X = self.data['data']
+
+        # Labels (Y)
+        # Assumption: A column n`th of data frame is the labels vector
+        # self.Y = self.data.iloc[:, :-1]
+        self.Y = self.data['target']
+
+        # Weights vector
+        # TODO: Calculate right value
+        self.weights = np.zeros(self.num_of_columns + 1)
+
+    def train(self):
+        # Algorithm implementation
+        for t in range(self.epochs):
+            for i, x in enumerate(self.X):
+                if (np.dot(self.X[i], self.weights) * self.Y[i]) <= 0:
+                    # TODO: Does it update weights vector at index i, ot should we use self.weights[i]
+                    self.weights = self.weights + self.X[i] * self.Y[i]
+
+        return self.weights
+
+
 def func(x):
     return 1 + (2*x) + (3 * (x**2))
 
@@ -36,7 +74,9 @@ def ex3b(model, x_train, y_train, x_test, y_test):
 
 
 def ex4(data):
-    pass
+    perceptron = Perceptron(data)
+    w = perceptron.train()
+    print(w)
 
 
 if __name__ == '__main__':
