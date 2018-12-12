@@ -7,6 +7,8 @@ from sklearn import svm
 from sklearn.metrics import confusion_matrix
 from sklearn.datasets import load_breast_cancer
 
+
+# Represents object that implement perceptron algorithm, contains train and predict methods.
 class Perceptron(object):
 
     def __init__(self, data, threshold=1000000):
@@ -72,29 +74,6 @@ def updt(grad, x, a):
     return x - (a * grad(x))
 
 
-def ex3a(x_train, y_train):
-    x_train = x_train / 255.0 * 2 - 1
-    clf = svm.SVC(kernel='linear')
-    clf.fit(x_train, y_train)
-    return clf
-
-
-def ex3b(model, x_train, y_train, x_test, y_test):
-    x_train = x_train / 255.0 * 2 - 1
-    x_test = x_test / 225.0 * 2 - 1
-    y_pred_train = model.predict(x_train)
-    train_matrix = confusion_matrix(y_train, y_pred_train)
-    print(train_matrix)
-    y_pred = model.predict(x_test)
-    cnf_matrix = confusion_matrix(y_test, y_pred)
-    print(cnf_matrix)
-
-
-def ex4(data):
-    perceptron = Perceptron(data)
-    w = perceptron.train()
-    return w
-
 def ex2():
     # Exercise 2:
     # Show function plot:
@@ -115,12 +94,47 @@ def ex2():
     print("Function minimum is at ({}, {})".format(x_step, func(x_step)))
 
 
+def ex3a(x_train, y_train):
+    x_train = x_train / 255.0 * 2 - 1
+    clf = svm.SVC(kernel='linear')
+    clf.fit(x_train, y_train)
+    return clf
+
+
+# Utility script, counts precision rate for 2D-Array
+def processConfusionMatrix(matrix):
+    return np.trace(matrix)/np.sum(matrix) * 100
+
+
+def ex3b(model, x_train, y_train, x_test, y_test):
+    x_train = x_train / 255.0 * 2 - 1
+    x_test = x_test / 225.0 * 2 - 1
+    y_pred_train = model.predict(x_train)
+    train_matrix = confusion_matrix(y_train, y_pred_train)
+    print(train_matrix)
+    print('Precision Rate: ' + str(processConfusionMatrix(train_matrix)) + ' (%)')
+    y_pred = model.predict(x_test)
+    print('===================================')
+    cnf_matrix = confusion_matrix(y_test, y_pred)
+    print(cnf_matrix)
+    print('Precision Rate: ' + str(processConfusionMatrix(cnf_matrix)) + ' (%)')
+
+
+def ex4(data):
+    perceptron = Perceptron(data)
+    w = perceptron.train()
+    return w
+
+
 if __name__ == '__main__':
     ex2()
     # Exercise 3:
     data_df, labels_df = load_mnist()
+    print("Start train")
     X_train, X_test, y_train, y_test = train_test_split(data_df, labels_df, random_state=98, test_size=0.143)
+    print("Start ex3a")
     clf = ex3a(X_train, y_train)
+    print("Start ex3b")
     ex3b(clf, X_train, y_train, X_test, y_test)
     ex4(load_breast_cancer())
 
